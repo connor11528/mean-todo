@@ -7,20 +7,12 @@
 // -Define routes for our frontend Angular application
 // -Set the app to listen on a port so we can view it in our browser
 
-var express = require('express'),
-    app = express(),
-    mongoose = require('mongoose'),
-    passport = require('passport'),
-    fs = require('fs');
-    
-var env = process.env.NODE_ENV || 'development';
-var config = require('./config/config')[env];
-    
-
-    
-// Makes connection asynchronously.  Mongoose will queue up database
-// operations and release them when the connection is complete.
-mongoose.connect(config.db);
+var express = require('express');
+var app = express();
+var mongoose = require('mongoose');
+   
+// configuration 
+mongoose.connect('mongodb://localhost/angular-express-mongodb');
 
 app.configure(function(){
     app.use(express.static(__dirname + '/public'));
@@ -29,6 +21,5 @@ app.configure(function(){
     app.use(express.methodOverride());
 });
 
-var port = process.env.PORT || 8080;
-app.listen(port);
-console.log('app is listening on port ' + port);
+app.listen(8080);
+console.log('app is listening on port 8080');
