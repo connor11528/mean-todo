@@ -10,10 +10,10 @@
 var express = require('express');
 var app = express();
 var mongoose = require('mongoose');
+var database = require('./config/config');
    
 // configuration 
-// mongoose.connect('mongodb://localhost/angular-express-mongodb');
-mongoose.connect('mongodb://ame:ame@mongo.onmodulus.net:27017/qurawu3R');
+mongoose.connect(database.development.db);
 
 app.configure(function(){
     app.use(express.static(__dirname + '/public'));
@@ -22,66 +22,9 @@ app.configure(function(){
     app.use(express.methodOverride());
 });
 
-// define model
-var Todo = mongoose.model('Todo', {
-	text: String,
-	done: Boolean
-	// MongoDB will automatically generate an _id
-});
 
-// ================ routes ====================
-
-// get all todos
-app.get('/api/todos', function(req, res){
-	// mongoose gets all todos in the database
-	Todo.find(function(err, todos){
-		if (err) res.send(err);
-		
-		res.json(todos); // return in json format
-	});
-});
-
-// create todo
-app.post('/api/todos', function(req, res){
-	Todo.create({
-		// info will come from angular ajax request
-		text: req.body.text,
-		done: false
-	}, function(err, todo){
-		if(err) res.send(err);
-		
-		// return all todos
-		Todo.find(function(err, todos){
-			if(err) res.send(err);
-			
-			res.json(todos);
-		});
-	});
-});
-
-// delete a todo
-app.delete('/api/todos/:todos_id', function(req, res){
-	console.log(req.params.todo_id);
-	
-	Todo.remove({
-		_id: req.params.todo_id
-	}, function(err, todo){
-		if (err) res.send(err);
-		
-		// return all todos
-		Todo.find(function(err, todos){
-			if (err) res.send(err);
-			
-			res.json(todos);
-		});
-	});
-});
-
-// application route
-app.get('*', function(req, res){
-	// send the angular app
-	res.sendFile('/public/index.html');
-});
+// load routes
+require('./app/routes')(app);
 
 // listen
 var port = process.env.PORT || 8080;
