@@ -1,39 +1,43 @@
 angular.module('todoController', [])
-    .controller('mainController', function($scope, $http){
+    .controller('mainController', function($scope, $http, Todos){
         $scope.formData = {};
         
-        // get all todos and show them
-        $http.get('/api/todos')
+        //use service to get all of the todos
+        Todos.get()
             .success(function(data){
-                $scope.todos = data; // bind json from api to $scope.todos
-                console.log('all todos: ' + data);
+                $scope.todos = data;
             })
             .error(function(data){
                 console.log('Error: ' + data);
             });
     
-        // when submitting post req to route, send text to node api    
+        // when submitting the add form, send the text to the node API
         $scope.createTodo = function(){
-            $http.post('api/todos', $scope.formData)
-                .success(function(data){
-                    $('input').val('');
-                    $scope.todos = data;
-                    console.log(data);
-                })
-                .error(function(data){
-                    console.log('Error: ' + data);
-                });
+        
+            // validate the formData to make sure that something is there
+			// if form is empty, nothing will happen
+			// people can't just hold enter to keep adding the same to-do anymore
+			if (!$.isEmptyObject($scope.formData)) {
+
+				// call the create function from our service (returns a promise object)
+				Todos.create($scope.formData)
+
+					// if successful creation, call our get function to get all the new todos
+					.success(function(data) {
+						$scope.formData = {}; // clear the form so our user is ready to enter another
+						$scope.todos = data; // assign our new list of todos
+					});
+			}
         };
     
         // delete todo after checking it
         $scope.deleteTodo = function(id){
-            $http.delete('/api/todos/' + id)
+            Todos.delete(id)
                 .success(function(data){
                     $scope.todos = data;
-                    console.log('delete ' + data);
                 })
                 .error(function(data){
-                    console.log('Error: ' + data);
+                    console.log("error deleting, data = " + data);
                 });
         };
     });
