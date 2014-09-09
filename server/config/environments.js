@@ -1,19 +1,9 @@
-/*!
- * Module dependencies.
- */
-
-var path = require('path')
-var rootPath = path.resolve(__dirname + '../..')
-
-/**
- * Expose config
- */
+var rootPath = require('path').resolve(__dirname + '../../..');
 
 module.exports = {
   development: {
     root: rootPath,
-    //db: 'mongodb://localhost/your_app_db_dev',
-    db: 'mongodb://ame:ame@mongo.onmodulus.net:27017/qurawu3R'
+    db: 'mongodb://localhost/mean-todo'
   },
   test: {
     root: rootPath,
@@ -27,4 +17,6 @@ module.exports = {
     root: rootPath,
     db: process.env.MONGOHQ_URL
   }
-}
+};
+
+// 'mongodb://ame:ame@mongo.onmodulus.net:27017/qurawu3R'
