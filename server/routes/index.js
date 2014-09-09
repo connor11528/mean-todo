@@ -1,9 +1,13 @@
+var express = require('express');
+var router = express.Router();
 
-module.exports = function(app){
+// var mongoose = require('mongoose');
+// var Post = mongoose.model('Post');
+// var Comment = mongoose.model('Comment');
 
-	app.get('*', function(req, res) {
-		// deprecated. though res.sendFile breaks
-		res.sendfile('./public/index.html');
-	});
+router.get('*', function(req, res) {
+	// deprecated. though res.sendFile breaks
+	res.sendfile('./public/index.html');
+});
 
-};
+module.exports = router;

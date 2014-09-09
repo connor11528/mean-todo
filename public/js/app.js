@@ -16,7 +16,17 @@ app.config(function($stateProvider, $urlRouterProvider, $locationProvider){
 			templateUrl: 'views/todos.html',
 			controller: 'TodosCtrl'
 		})
+		.state('posts', {
+			url: '/posts',
+			templateUrl: 'views/posts.html',
+			controller: 'PostsCtrl'
+		})
+		.state('post', {
+			url: '/posts/{id}',
+			templateUrl: 'views/post.html',
+			controller: 'PostsCtrl'
+		})
 
 
-	$urlRouterProvider.otherwise('/');
+	$urlRouterProvider.otherwise('home');
 })

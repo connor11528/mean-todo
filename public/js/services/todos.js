@@ -1,5 +1,4 @@
 
-    
 app.factory('Todos', function($http){
     return {
         // get, create, delete will return promise objects

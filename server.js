@@ -19,11 +19,18 @@ app.use(express.static(__dirname + '/public'));
 
 // database
 require('./server/models/todo');
+require('./server/models/post');
+require('./server/models/comment');
 mongoose.connect(config.db);
 
 // routes
-require('./server/routes/todos')(app);
-require('./server/routes/index')(app);
+var todos = require('./server/routes/todos');
+var posts = require('./server/routes/posts');
+var index = require('./server/routes/index');
+
+app.use('/api', posts);
+app.use('/api', todos);
+app.use('/', index);
 
 app.listen(port);
 console.log('app is listening on port ' + port);

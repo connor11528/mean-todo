@@ -29,14 +29,14 @@ app.controller('TodosCtrl', function($scope, $http, Todos){
 		}
     };
 
-    // delete todo after checking it
     $scope.deleteTodo = function(id){
         Todos.delete(id)
-            .success(function(data){
+            .success(function(data) {
+                // update todo list
                 $scope.todos = data;
             })
-            .error(function(data){
-                console.log("error deleting, data = " + data);
+            .error(function(data) {
+                console.log('Error: ' + data);
             });
     };
 });
